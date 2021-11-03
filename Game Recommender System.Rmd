@@ -1,0 +1,305 @@
+---
+title: "Game Recommendation System - CSE3505 Project"
+output: html_document
+---
+## Game Recommendation System
+
+### Datasets we have:
+
+#### User Dataset (steam-200k.csv)
+
+##### Description: This dataset contains 4 attributes related to the user. The features are user_id, game_title, behavior & value.The original dataset doesn't doesn't have headers. It contains a total of 200,000 rows, including 5,155 unique games and 12,393 unique users. 
+
+##### Importing the "steam-200k.csv" Dataset.
+```{r}
+user=read.csv(file="F:/Programming/OneDrive/Documents/Datasets/steam-200k.csv")
+```
+##### Understanding the "steam-200k.csv" data
+
+##### View the user dataset
+```{r}
+View(user)
+```
+
+##### Find out the dimension of user dataset
+```{r}
+dim(user)
+```
+
+##### Total number of rows in user dataset
+```{r}
+nrow(user)
+```
+
+##### Total number of columns in user dataset
+```{r}
+ncol(user)
+```
+
+##### Attributes of the user dataset
+```{r}
+colnames(user)
+```
+
+##### Structure of the user dataset
+```{r}
+str(user)
+```
+
+##### Class of the user dataframe
+```{r}
+class(user)
+```
+
+##### Type of user as a dataframe
+```{r}
+typeof(user)
+```
+
+##### First 6 records of user
+```{r}
+head(user)
+```
+
+##### Last 6 records of user
+```{r}
+tail(user)
+```
+
+##### Checking for the occurence of NA values in user
+```{r}
+any(is.na(user))
+```
+Inference: There are no NA values in user dataset.
+
+#### Game Dataset (steam_games.csv)
+
+##### Description: This dataset contains a list of games, their descriptions, the url (directed to the Steam store), the type of package (app, bundle, etc.), the game title, a short description, recent reviews, all reviews, release date, developer, publisher, popular tags, game detail (Multi-player, Single-player, Full controller support, etc.), languages, achievements, genre (Action, Adventure, RPG, Strategy, etc.), game description, description of mature content, minimum requirement to run the game, recommended requirement, original price and price with discount. There is a total of 51920 games in the dataset. 
+
+##### Importing the "steam_games.csv" Dataset.
+```{r}
+game=read.csv("F:/Programming/OneDrive/Documents/Datasets/steam_games.csv")
+```
+
+##### Understanding the "steam_games.csv" data
+
+##### View the games dataset
+```{r}
+View(game)
+```
+
+##### Find out the dimensions of the game dataset
+```{r}
+dim(game)
+```
+
+##### Total number of rows in the games dataset
+```{r}
+nrow(game)
+```
+
+##### Total number of columns in the games dataset
+```{r}
+ncol(game)
+```
+
+##### Attributes of the games dataset
+```{r}
+colnames(game)
+```
+
+##### Structure of the games dataset
+```{r}
+str(game)
+```
+
+##### Class of the game dataframe
+```{r}
+class(game)
+```
+
+##### Type of game as a dataframe
+```{r}
+typeof(game)
+```
+
+##### First 6 records present in the game dataset
+```{r}
+head(game)
+```
+
+##### Last 6 records present in the game dataset
+```{r}
+tail(game)
+```
+
+##### Checking for the presence of NA values in the game dataset
+```{r}
+any(is.na(game))
+```
+Inference: There are NA values present in the game dataset.
+
+#### Data Cleaning
+
+##### Dealing with the game dataset
+
+###### Print the features of the game dataset
+```{r}
+colnames(game)
+```
+
+###### checking which columns have how many NA values 
+```{r}
+sprintf("Total NA values in 'url' column = %d",sum(is.na(game$url)))
+sprintf("Total NA values in 'types' column = %d",sum(is.na(game$types)))
+sprintf("Total NA values in 'name' column = %d",sum(is.na(game$name)))
+sprintf("Total NA values in 'desc_snippet' column = %d",sum(is.na(game$desc_snippet)))
+sprintf("Total NA values in 'recent_reviews' column = %d",sum(is.na(game$recent_reviews)))
+sprintf("Total NA values in 'all_reviews' column = %d",sum(is.na(game$all_reviews)))
+sprintf("Total NA values in 'release_date' column = %d",sum(is.na(game$release_date)))
+sprintf("Total NA values in 'developer' column = %d",sum(is.na(game$developer)))
+sprintf("Total NA values in 'publisher' column = %d",sum(is.na(game$publisher)))
+sprintf("Total NA values in 'popular_tags' column = %d",sum(is.na(game$popular_tags)))
+sprintf("Total NA values in 'game_details' column = %d",sum(is.na(game$game_details)))
+sprintf("Total NA values in 'languages' column = %d",sum(is.na(game$languages)))
+sprintf("Total NA values in 'achievements' column = %d",sum(is.na(game$achievements)))
+sprintf("Total NA values in 'genre' column = %d",sum(is.na(game$genre)))
+sprintf("Total NA values in 'game_description' column = %d",sum(is.na(game$game_description)))
+sprintf("Total NA values in 'mature_content' column = %d",sum(is.na(game$mature_content)))
+sprintf("Total NA values in 'minimum_requirements' column = %d",sum(is.na(game$minimum_requirements)))
+sprintf("Total NA values in 'recommended_requirements' column = %d",sum(is.na(game$recommended_requirements)))
+sprintf("Total NA values in 'original_price' column = %d",sum(is.na(game$original_price)))
+sprintf("Total NA values in 'discount_price' column = %d",sum(is.na(game$discount_price)))
+```
+Inference: All the NA values are located in the 'achievements' column.
+
+###### Ambiguity in the no. of NaN values in achievements
+```{r}
+sprintf("Count of NaN values in 'achievements' using grepl(): %d",sum(grepl("NaN",game$achievements)))
+sprintf("Count of NaN values in 'achievements' using is.na(): %d",sum(is.na(game$achievements)))
+```
+Inference: We can take the higher no. to reduce any confusions and use is.na() function. But for some of the other columns, the 
+
+###### Sum of NaN values in columns other than achievements
+```{r}
+sprintf("Total NaN values in 'url' column = %d",sum(grepl("NaN",(game$url))))
+sprintf("Total NaN values in 'types' column = %d",sum(grepl("NaN",(game$types))))
+sprintf("Total NaN values in 'name' column = %d",sum(grepl("NaN",(game$name))))
+sprintf("Total NaN values in 'desc_snippet' column = %d",sum(grepl("NaN",(game$desc_snippet))))
+sprintf("Total NaN values in 'recent_reviews' column = %d",sum(grepl("NaN",(game$recent_reviews))))
+sprintf("Total NaN values in 'all_reviews' column = %d",sum(grepl("NaN",(game$all_reviews))))
+sprintf("Total NaN values in 'release_date' column = %d",sum(grepl("NaN",(game$release_date))))
+sprintf("Total NaN values in 'developer' column = %d",sum(grepl("NaN",(game$developer))))
+sprintf("Total NaN values in 'publisher' column = %d",sum(grepl("NaN",(game$publisher))))
+sprintf("Total NaN values in 'popular_tags' column = %d",sum(grepl("NaN",(game$popular_tags))))
+sprintf("Total NaN values in 'game_details' column = %d",sum(grepl("NaN",(game$game_details))))
+sprintf("Total NaN values in 'languages' column = %d",sum(grepl("NaN",(game$languages))))
+sprintf("Total NaN values in 'genre' column = %d",sum(grepl("NaN",(game$genre))))
+sprintf("Total NaN values in 'game_description' column = %d",sum(grepl("NaN",(game$game_description))))
+sprintf("Total NaN values in 'mature_content' column = %d",sum(grepl("NaN",(game$mature_content))))
+sprintf("Total NaN values in 'minimum_requirements' column = %d",sum(grepl("NaN",(game$minimum_requirements))))
+sprintf("Total NaN values in 'recommended_requirements' column = %d",sum(grepl("NaN",(game$recommended_requirements))))
+sprintf("Total NaN values in 'original_price' column = %d",sum(grepl("NaN",(game$original_price))))
+sprintf("Total NaN values in 'discount_price' column = %d",sum(grepl("NaN",(game$discount_price))))
+```
+Inference: The 'NaN' values in the above columns were present in string format. So, we were not able to detect them using is.na() function.
+
+###### Replace all the 'NaN' values in 'name', 'desc_snippet', 'recent_reviews', 'all_reviews', 'release_date', 'popular_tags', 'game_description', 'mature_content', 'minimum_requirements' and 'recommended_requirements' with "".
+```{r}
+game$name[grepl("NaN",game$name)] <- ""
+game$desc_snippet[grepl("NaN",game$desc_snippet)] <- ""
+game$recent_reviews[grepl("NaN",game$recent_reviews)] <- ""
+game$all_reviews[grepl("NaN",game$all_reviews)] <- ""
+game$release_date[grepl("NaN",game$release_date)] <- ""
+game$popular_tags[grepl("NaN",game$popular_tags)] <- ""
+game$game_description[grepl("NaN",game$game_description)] <- ""
+game$mature_content[grepl("NaN",game$mature_content)] <- ""
+game$minimum_requirements[grepl("NaN",game$minimum_requirements)] <- ""
+game$recommended_requirements[grepl("NaN",game$recommended_requirements)] <- ""
+```
+Inference: Now the game dataset columns other than achievements are cleaned of 'NaN' values.
+
+###### Replace all the Na values in 'achievements' with 0
+```{r}
+game$achievements[is.na(game$achievements)] <- 0
+```
+
+###### View the game dataset bereft of any Na/NaN values
+```{r}
+View(game)
+```
+
+###### The no. of Na/NaN values in the game dataset now
+```{r}
+sum(is.na(game))
+```
+Inference: The game dataset is now fully cleansed of Na/NaN values
+
+###### Install and use the 'stringr' library 
+```{r}
+# install.packages("stringr")
+library(stringr)
+```
+
+###### Install and use the 'dplyr' library
+```{r}
+# install.packages("dplyr")
+library(dplyr)
+```
+
+###### Removing the '$' from the values of 'original_price' column
+```{r}
+game$original_price <- str_replace_all(game$original_price, "\\$", "")
+```
+
+###### Replacing all the non-numeric characters with 0
+```{r}
+game$original_price <- gsub("^\\D.*", 0, game$original_price)
+game$original_price <- sub("", 0, game$original_price)
+# game$original_price
+```
+Note: All the ambiguous values are replaced with 0 in 'original_price' column.
+
+###### Removing the '$' from the values of 'discount_price' column
+```{r}
+game$discount_price <- str_replace_all(game$discount_price, "\\$", "")
+```
+
+###### Replacing all the non-numeric characters with 0
+```{r}
+game$discount_price <- gsub("^\\D.*", 0, game$discount_price)
+game$discount_price <- gsub("", 0, game$discount_price)
+# game$discount_price
+```
+Note: All the ambiguous values are replaced with 0 in 'discount_price' column.
+
+###### Writing the cleansed dataset into a .csv file
+```{r}
+write.csv(game,"F:/Programming/OneDrive/Documents/Datasets/clean_game.csv",row.names=TRUE)
+```
+Note: The name of the cleansed dataset is 'clean_game'
+
+###### 
+```{r}
+
+```
+
+###### 
+```{r}
+
+```
+
+###### 
+```{r}
+
+```
+
+###### 
+```{r}
+
+```
+
+###### 
+```{r}
+
+```
