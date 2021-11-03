@@ -917,10 +917,9 @@ game$original_price &lt;- sub(&quot;&quot;, 0, game$original_price)
 <h6>Removing the ‘$’ from the values of ‘discount_price’ column</h6>
 <pre class="r"><code>game$discount_price &lt;- str_replace_all(game$discount_price, &quot;\\$&quot;, &quot;&quot;)</code></pre>
 </div>
-<div id="replacing-all-the-non-numeric-characters-with-0-1" class="section level6">
-<h6>Replacing all the non-numeric characters with 0</h6>
-<pre class="r"><code>game$discount_price &lt;- gsub(&quot;^\\D.*&quot;, 0, game$discount_price)
-game$discount_price &lt;- gsub(&quot;&quot;, 0, game$discount_price)
+<div id="replacing-all-the-with-0-in-discount_price-column" class="section level6">
+<h6>Replacing all the &quot;&quot; with 0 in ‘discount_price’ column</h6>
+<pre class="r"><code>game$discount_price &lt;- sub(&quot;&quot;, 0, game$discount_price)
 # game$discount_price</code></pre>
 <p>Note: All the ambiguous values are replaced with 0 in ‘discount_price’ column.</p>
 </div>

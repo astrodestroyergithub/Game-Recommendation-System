@@ -265,10 +265,9 @@ Note: All the ambiguous values are replaced with 0 in 'original_price' column.
 game$discount_price <- str_replace_all(game$discount_price, "\\$", "")
 ```
 
-###### Replacing all the non-numeric characters with 0
+###### Replacing all the "" with 0 in 'discount_price' column
 ```{r}
-game$discount_price <- gsub("^\\D.*", 0, game$discount_price)
-game$discount_price <- gsub("", 0, game$discount_price)
+game$discount_price <- sub("", 0, game$discount_price)
 # game$discount_price
 ```
 Note: All the ambiguous values are replaced with 0 in 'discount_price' column.
