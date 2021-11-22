@@ -1,0 +1,224 @@
+---
+title: "Game Dataset EDA"
+author: "Tamojit Roy"
+date: "22/11/2021"
+output: html_document
+---
+
+## Reading the game dataset
+
+```{r}
+df = read.csv(file="Datasets/clean_game.csv")
+```
+
+## Preprocessing the all reviews column
+
+```{r}
+#install.packages("micropan")
+library(micropan)
+
+df1 <- df[-which(df$all_reviews == ""), ]
+
+n = count(df1)
+
+review = c()
+for(i in (1:28470)) {
+  str=df$all_reviews[i]
+  str2=unlist(gregexpr(pattern='-',str))
+  vex=substr(str,str2+2,str2+3)
+  review <- append(review,strtoi(vex))
+}
+
+review <- data.frame(review)
+review <- review[-which(is.na(review$review)), ]
+```
+
+## Distribution of Game Reviews
+
+```{r}
+#install.packages("ggplot2")
+library(ggplot2)
+ggplot() + aes(review)+ geom_histogram(binwidth=1, colour="blue", fill="blue")
+
+# ggplot(review,aes(x=V1))+geom_histogram()+labs(title="Distribution of Game Reviews",y="Number of Games",x="Rating %")
+```
+
+## Preprocessing of genre column
+
+```{r}
+df2 <- df[-which(df$genre == ""), ]
+
+n = count(df2)
+
+genre1 <- df2$genre
+
+library(base)
+
+list1 <- unlist(strsplit(genre1[1], ","))
+genres = c()
+
+for(i in (2:40395)) {
+  list2 <- unlist(strsplit(genre1[i], ","))
+  genres = union(list1,list2)
+  list1 = genres
+}
+
+no_of_games = replicate(34,0)
+
+genre2 <- data.frame(genres,no_of_games)
+```
+
+## 
+
+```{r}
+library(stringr)
+
+for(i in (1:40395)) {
+  list_store <- unlist(strsplit(genre1[i], ","))
+  for(j in (1:34)) {
+    if(sum(str_detect(list_store,genres[j])) == 1) {
+      genre2$no_of_games[j] = genre2$no_of_games[j]+1
+    }
+  }
+}
+```
+
+## All distinct genres
+
+```{r}
+genres
+```
+
+## Plotting recurrence of genre bar chart
+
+```{r}
+ggplot(data=genre2, aes(x=no_of_games, y=genres)) + geom_bar(stat="identity") + ggtitle("Recurrence of Genre")
+```
+
+## Preprocessing popular tags column
+
+```{r}
+df3 <- df[-which(df$popular_tags == ""), ]
+
+n = count(df3)
+
+tags1 <- df3$popular_tags
+
+library(base)
+
+list1 <- unlist(strsplit(tags1[1], ","))
+popular_tags = c()
+
+for(i in (2:37888)) {
+  list2 <- unlist(strsplit(tags1[i], ","))
+  popular_tags = union(list1,list2)
+  list1 = popular_tags
+}
+
+no_of_games = replicate(376,0)
+
+tags2 <- data.frame(popular_tags,no_of_games)
+```
+
+## Distinct Popular tags
+
+```{r}
+popular_tags
+```
+
+## 
+
+```{r}
+library(stringr)
+
+for(i in (1:37888)) {
+  list_store <- unlist(strsplit(tags1[i], ","))
+  for(j in (1:376)) {
+    if(sum(str_detect(list_store,popular_tags[j])) == 1) {
+      tags2$no_of_games[j] = tags2$no_of_games[j]+1
+    }
+  }
+}
+```
+
+## Plotting recurrence of popular tags bar chart
+
+```{r}
+arrange(tags2,desc(no_of_games))
+tags3 = head(tags2,20)
+
+ggplot(data=tags3, aes(x=no_of_games, y=popular_tags)) + geom_bar(stat="identity") + ggtitle("Recurrence of Popular Tags")
+```
+
+## Preprocessing game details column
+
+```{r}
+df4 <- df[-which(df$game_details == ""), ]
+
+n = count(df4)
+
+details1 <- df4$game_details
+
+library(base)
+
+list1 <- unlist(strsplit(details1[1], ","))
+game_details = c()
+
+for(i in (2:40313)) {
+  list2 <- unlist(strsplit(details1[i], ","))
+  game_details = union(list1,list2)
+  list1 = game_details
+}
+
+no_of_games = replicate(34,0)
+
+details2 <- data.frame(game_details,no_of_games)
+```
+
+## Distinct game details
+
+```{r}
+game_details
+```
+
+## 
+
+```{r}
+library(stringr)
+
+for(i in (1:40313)) {
+  list_store <- unlist(strsplit(details1[i], ","))
+  for(j in (1:34)) {
+    if(sum(str_detect(list_store,game_details[j])) == 1) {
+      details2$no_of_games[j] = details2$no_of_games[j]+1
+    }
+  }
+}
+```
+
+## Plotting recurrence of game details bar chart
+
+```{r}
+arrange(details2,desc(no_of_games))
+details3 = head(details2,20)
+
+ggplot(data=details3, aes(x=no_of_games, y=game_details)) + geom_bar(stat="identity") + ggtitle("Recurrence of Game Details")
+```
+
+## 
+
+```{r}
+
+```
+
+## 
+
+```{r}
+
+```
+
+## 
+
+```{r}
+
+```
