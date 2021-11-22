@@ -9,7 +9,7 @@ I always had a very keen interest in video games. Our main objective of this pro
 **GSites document:** https://sites.google.com/d/1oTPqZsIaTFWqJ37i3_Y1X80hNAg3Mx7e/p/1-ZVBPh5wfk-VP3QEt2klUtKZvu2FXOAt/edit
 
 ## Research Papers:
-**[1]** https://proceedings.neurips.cc/paper/2018/file/a9a1d5317a33ae8cef33961c34144f84-Paper.pdf
+**[1]** https://proceedings.neurips.cc/paper/2018/file/a9a1d5317a33ae8cef33961c34144f84-Paper.pdf </br>
 **[2]** https://www.ijresm.com/Vol.3_2020/Vol3_Iss2_February20/IJRESM_V3_I2_143.pdf
 **[3]** http://aegaeum.com/gallery/agm.j-4377.15-f.pdf
 **[4]** https://www.researchgate.net/publication/333072035_Recommender_Systems_for_Online_Video_Game_Platforms_the_Case_of_STEAM
